@@ -1,0 +1,205 @@
+@import "tailwindcss";
+
+/* elections.zonemix.tech, in the zonemix.tech design language.
+   Day is the Almanac palette (paper, ink, rust); night is Night Shift (ink,
+   amber). :root holds day, :root.dark (set before paint in layout.tsx) night.
+   Party tones: Republican red and Democratic blue sit far apart in lightness,
+   and every use of them also carries a letter badge, a label or stripes. */
+
+:root {
+  --bg: #f4f0e8;
+  --surface: #ede7db;
+  --surface-2: #e6dfd1;
+  --line: #ddd5c6;
+  --line-strong: #c3b8a4;
+  --fg: #1d1a16;
+  --fg-soft: #3a352e;
+  --muted: #5e574c;
+  --accent: #a4432a;
+  --selection: rgb(164 67 42 / 0.18);
+
+  --rep: #d9473c;
+  --rep-alt: #eea198;
+  --on-rep: #ffffff;
+  --dem: #1a4580;
+  --dem-alt: #7d9fcf;
+  --on-dem: #ffffff;
+  --other: #7d766b;
+  --other-alt: #b6aea1;
+  --on-other: #ffffff;
+  --empty: #e2dbcd;
+  --stripe: rgb(29 26 22 / 0.26);
+}
+
+:root.dark {
+  color-scheme: dark;
+  --bg: #0d1014;
+  --surface: #12171d;
+  --surface-2: #171e26;
+  --line: #1f2730;
+  --line-strong: #2c3642;
+  --fg: #e6ebf0;
+  --fg-soft: #c3ccd5;
+  --muted: #98a4b0;
+  --accent: #ffb547;
+  --selection: rgb(255 181 71 / 0.22);
+
+  --rep: #d6453d;
+  --rep-alt: #f0a49c;
+  --on-rep: #ffffff;
+  --dem: #7cc7ff;
+  --dem-alt: #c2e4ff;
+  --on-dem: #0d1014;
+  --other: #8b96a3;
+  --other-alt: #c3cbd4;
+  --on-other: #0d1014;
+  --empty: #1a2129;
+  --stripe: rgb(13 16 20 / 0.6);
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-fg: var(--fg);
+  --color-fg-soft: var(--fg-soft);
+  --color-muted: var(--muted);
+  --color-accent: var(--accent);
+  --font-sans: var(--ff-sans), "Avenir Next", "Helvetica Neue", sans-serif;
+}
+
+* { box-sizing: border-box; }
+html {
+  color-scheme: light;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  font-optical-sizing: auto;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+body { margin: 0; min-height: 100dvh; font-size: 1.0625rem; }
+::selection { background: var(--selection); }
+h1, h2, h3 { text-wrap: balance; }
+p { text-wrap: pretty; }
+a { color: inherit; }
+:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; border-radius: 3px; }
+
+/* Numbers line up in columns but stay in the page's typeface. */
+.num { font-variant-numeric: tabular-nums lining-nums; font-feature-settings: "tnum" 1, "lnum" 1; }
+
+.shell {
+  width: 100%;
+  max-width: calc(75rem + 2 * var(--gutter));
+  margin: 0 auto;
+  padding-inline: var(--gutter);
+  --gutter: clamp(1rem, 5vw, 5rem);
+}
+
+/* Headings */
+.display {
+  margin: 0;
+  font-size: clamp(3.25rem, 9vw, 7rem);
+  line-height: 0.92;
+  font-weight: 640;
+  letter-spacing: -0.04em;
+  font-stretch: 88%;
+}
+.h2 { margin: 0; font-size: 2rem; line-height: 1.1; font-weight: 600; letter-spacing: -0.022em; font-stretch: 94%; }
+.h3 { margin: 0; font-size: 1.375rem; line-height: 1.2; font-weight: 580; letter-spacing: -0.015em; }
+.lede { margin: 0; font-size: clamp(1.1875rem, 2vw, 1.375rem); line-height: 1.5; color: var(--muted); max-width: 36rem; }
+.small { font-size: 0.875rem; line-height: 1.45; color: var(--muted); }
+
+/* Sections: heading rail + content column, as on zonemix.tech */
+.sect {
+  display: grid;
+  grid-template-columns: minmax(0, 15rem) minmax(0, 1fr);
+  column-gap: 3rem;
+  padding-top: clamp(4rem, 8vw, 7rem);
+}
+.sect-head { display: flex; flex-direction: column; gap: 0.75rem; }
+.sect-head p { margin: 0; color: var(--muted); font-size: 1rem; max-width: 15rem; }
+@media (min-width: 961px) { .sect-head { position: sticky; top: 2rem; align-self: start; } }
+@media (max-width: 960px) {
+  .sect { grid-template-columns: minmax(0, 1fr); row-gap: 1.75rem; }
+  .sect-head p { max-width: 36rem; }
+}
+
+/* Links and buttons */
+.link {
+  color: var(--fg); text-decoration: underline; text-decoration-color: var(--line-strong);
+  text-decoration-thickness: 1px; text-underline-offset: 4px; transition: text-decoration-color 0.2s;
+}
+.link:hover { text-decoration-color: var(--accent); }
+.btn-quiet {
+  display: inline-flex; align-items: center; gap: 0.5rem; min-height: 2.75rem; padding: 0 1rem;
+  border: 1px solid var(--line-strong); border-radius: 6px; background: transparent; color: var(--fg);
+  font: 500 0.9375rem/1 var(--font-sans); cursor: pointer; transition: border-color 0.2s;
+}
+.btn-quiet:hover { border-color: var(--muted); }
+.btn-solid {
+  display: inline-flex; align-items: center; min-height: 3rem; padding: 0 1.25rem;
+  border: 1px solid var(--fg); border-radius: 6px; background: var(--fg); color: var(--bg);
+  font: 500 1rem/1 var(--font-sans); cursor: pointer; transition: background-color 0.2s, border-color 0.2s;
+}
+.btn-solid:hover { background: var(--fg-soft); border-color: var(--fg-soft); }
+form .btn-quiet { min-height: 3rem; } /* match the ZIP field's height */
+.icon-btn {
+  display: inline-grid; place-items: center; width: 2.75rem; height: 2.75rem; padding: 0;
+  border: 1px solid var(--line); border-radius: 50%; background: transparent; color: var(--muted);
+  cursor: pointer; transition: color 0.2s, border-color 0.2s;
+}
+.icon-btn:hover { color: var(--fg); border-color: var(--line-strong); }
+
+/* Party letter badge */
+.badge {
+  display: inline-grid; place-items: center; flex-shrink: 0;
+  width: 1.375rem; height: 1.375rem; border-radius: 4px;
+  font-size: 0.75rem; font-weight: 700; line-height: 1;
+}
+.badge-lg { width: 2rem; height: 2rem; border-radius: 6px; font-size: 1rem; }
+
+/* Bars */
+.track { position: relative; height: 0.5rem; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
+.track-lg { height: 1rem; }
+.fill { position: absolute; inset-block: 0; border-radius: 999px; transition: width 0.9s cubic-bezier(0.22, 1, 0.36, 1); }
+
+/* Status dot: steady before polls close, pulsing while results come in */
+.dot { display: inline-block; width: 0.5rem; height: 0.5rem; border-radius: 50%; background: var(--accent); flex-shrink: 0; }
+.dot-live { animation: pulse 1.8s ease-in-out infinite; }
+@keyframes pulse { 50% { opacity: 0.35; } }
+
+/* Loading placeholders */
+.skeleton {
+  border-radius: 4px;
+  background: linear-gradient(90deg, var(--surface) 0%, var(--surface-2) 45%, var(--surface) 90%);
+  background-size: 480px 100%;
+  animation: shimmer 1.6s infinite linear;
+}
+@keyframes shimmer { from { background-position: -480px 0; } to { background-position: 480px 0; } }
+
+/* Map */
+.county { cursor: pointer; transition: fill 0.5s ease; }
+.county:hover { stroke: var(--fg); stroke-width: 1.4; }
+.county:focus-visible { outline: none; stroke: var(--accent); stroke-width: 2; }
+
+/* Turnout table */
+.table { width: 100%; border-collapse: collapse; font-size: 0.9375rem; }
+.table th { font-weight: 500; color: var(--muted); text-align: left; padding: 0; border-bottom: 1px solid var(--line-strong); }
+.table th button {
+  all: unset; display: inline-flex; align-items: center; gap: 0.35rem; min-height: 2.75rem;
+  padding: 0 0.75rem; cursor: pointer; color: inherit;
+}
+.table th button:hover { color: var(--fg); }
+.table th button:focus-visible { outline: 2px solid var(--accent); outline-offset: -2px; }
+.table td { padding: 0.55rem 0.75rem; border-bottom: 1px solid var(--line); }
+.table .r { text-align: right; }
+.table th.r button { justify-content: flex-end; width: 100%; box-sizing: border-box; }
+
+@media (prefers-reduced-motion: reduce) {
+  .dot-live, .skeleton { animation: none; }
+  .fill, .county { transition: none; }
+}

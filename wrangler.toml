@@ -1,0 +1,24 @@
+# Cloudflare Worker: serves the static Next.js export (./out) and proxies South
+# Dakota's public election results service under /api/* (worker/index.ts).
+# Build first:
+#   npm run build        # next build -> ./out
+#   npx wrangler deploy
+name = "sd-elections"
+main = "worker/index.ts"
+compatibility_date = "2025-05-05"
+
+# Optional custom domain. Without it the Worker runs on your workers.dev
+# subdomain. To use your own hostname, uncomment and set it to a hostname in a
+# zone on your Cloudflare account; wrangler creates the route and DNS record.
+# Keep `routes` above the [assets] table: in TOML, keys after a [table] header
+# belong to that table, so placing it below silently drops the custom domain.
+# routes = [
+#   { pattern = "elections.example.com", custom_domain = true }
+# ]
+
+# Static assets = the Next.js export. The Worker runs only for non-asset paths
+# (i.e. /api/*); unknown paths fall back to index.html (single-page app).
+[assets]
+directory = "./out"
+binding = "ASSETS"
+not_found_handling = "single-page-application"
